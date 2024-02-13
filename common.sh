@@ -4,10 +4,10 @@ func_apppreq() {
     cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-    useradd roboshop &>>${log}
+  useradd roboshop &>>${log}
 
     echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Cleanup Existing Application Content<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-      rm -rf / app &>>${log}
+    rm -rf /app &>>${log}
 
     echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application Directory<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     mkdir /app &>>${log}
