@@ -1,5 +1,7 @@
 log=/tmp/roboshop.log
 func_apppreq() {
+   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+    cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User e<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     useradd roboshop &>>${log}
 
@@ -24,10 +26,8 @@ func_systemd() {
     systemctl restart ${component} &>>${log}
 }
 func_nodejs() {
-  log=/tmp/roboshop.log
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
+ func_apppreq
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
@@ -52,8 +52,7 @@ func_nodejs() {
 }
 
 func_java() {
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  cp shipping.service /etc/systemd/system/shipping.service &>>${log}
+  func_apppreq
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install Maven<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf install maven -y &>>${log}
@@ -71,4 +70,14 @@ func_java() {
   mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
 
  func_systemd
+}
+
+func_python() {
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build $(component) service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  dnf install python36 gcc python3-devel -y &>>${log}
+  func_apppreq
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build $(component) service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  pip3.6 install -r requirements.txt &>>${log}
+
+  func_systemd
 }
