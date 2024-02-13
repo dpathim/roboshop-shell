@@ -3,8 +3,7 @@ func_apppreq() {
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
 
-    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-      cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
+
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     useradd roboshop &>>${log}
@@ -32,6 +31,8 @@ func_systemd() {
 func_nodejs() {
 
  func_apppreq
+ echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+   cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install nodejs <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf module disable nodejs -y  &>>${log}
   dnf module enable nodejs:18 -y  &>>${log}
@@ -48,8 +49,7 @@ func_nodejs() {
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load ${component} Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   mongo --host mondodb.vdevops562.online </app/schema/${component}.js &>>${log}
 
-
-}
+ }
 
 func_java() {
 
@@ -74,10 +74,10 @@ func_java() {
 }
 
 func_python() {
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build $(component) service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component} service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf install python36 gcc python3-devel -y &>>${log}
   func_apppreq
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build $(component) service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component}  service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   pip3.6 install -r requirements.txt &>>${log}
 
   func_systemd
