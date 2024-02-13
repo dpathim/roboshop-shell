@@ -2,11 +2,15 @@ log=/tmp/roboshop.log
 func_apppreq() {
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User e<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+
+    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+      cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
+
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     useradd roboshop &>>${log}
 
-    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Cleanup Existing Application Content e<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-      rm-rf / app &>>${log}
+    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Cleanup Existing Application Content<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+      rm -rf / app &>>${log}
 
     echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application Directory<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     mkdir /app &>>${log}
@@ -28,11 +32,7 @@ func_systemd() {
 func_nodejs() {
 
  func_apppreq
-
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
-
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install nodejs <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+ echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install nodejs <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf module disable nodejs -y  &>>${log}
   dnf module enable nodejs:18 -y  &>>${log}
   dnf install nodejs -y  &>>${log}
@@ -52,6 +52,7 @@ func_nodejs() {
 }
 
 func_java() {
+
   func_apppreq
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install Maven<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
@@ -66,7 +67,7 @@ func_java() {
  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install mysql Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf install mysql -y &>>${log}
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load  Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
 
  func_systemd
