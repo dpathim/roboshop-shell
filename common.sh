@@ -1,3 +1,4 @@
+log=/tmp/roboshop.log
 func_apppreq() {
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User e<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     useradd roboshop &>>${log}
@@ -52,22 +53,22 @@ func_nodejs() {
 
 func_java() {
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  cp shipping.service /etc/systemd/system/shipping.service
+  cp shipping.service /etc/systemd/system/shipping.service &>>${log}
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install Maven<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  dnf install maven -y
+  dnf install maven -y &>>${log}
 
   func_apppreq
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  mvn clean package
-  mv target/${component}-1.0.jar ${component}.jar
+  mvn clean package &>>${log}
+  mv target/${component}-1.0.jar ${component}.jar &>>${log}
 
  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install mysql Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  dnf install mysql -y
+  dnf install mysql -y &>>${log}
 
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load  Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql
+  mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
 
  func_systemd
 }
