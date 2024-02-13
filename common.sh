@@ -3,8 +3,6 @@ func_apppreq() {
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create ${component} Service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     cp ${component}.service /etc/systemd/system/${component}.service &>>${log}
 
-
-
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Application User<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
     useradd roboshop &>>${log}
 
@@ -77,8 +75,18 @@ func_python() {
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component} service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   dnf install python36 gcc python3-devel -y &>>${log}
   func_apppreq
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component}  service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component} service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   pip3.6 install -r requirements.txt &>>${log}
 
   func_systemd
+}
+func_golang() {
+   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install golang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  dnf install golang -y &>>${log}
+  func_apppreq
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Build ${component}service<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  go mod init dispatch &>>${log}
+  go get &>>${log}
+  go build &>>${log}
+   func_systemd
 }
