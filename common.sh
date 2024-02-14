@@ -50,8 +50,8 @@ func_schema_setup() {
     dnf install mongodb-org-shell -y &>>${log}
     func_exit_status
 
-    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load ${component} Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-    mongo --host mondodb.vdevops562.online </app/schema/${component}.js &>>${log}
+    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load user Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+    mongo --host mongodb.vdevops562.online </app/schema/${component}.js &>>${log}
     func_exit_status
     fi
 
@@ -83,6 +83,7 @@ func_nodejs() {
   func_exit_status
 
 func_schema_setup
+
 func_systemd
 
  }
