@@ -26,6 +26,24 @@ func_systemd() {
     systemctl enable ${component} &>>${log}
     systemctl restart ${component} &>>${log}
 }
+
+func_schema_setup() {
+  if [ "${schema_type}" == "mongodb" ]; then
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install Mongodb Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+    dnf install mongodb-org-shell -y &>>${log}
+
+    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load ${component} Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+    mongo --host mondodb.vdevops562.online </app/schema/${component}.js &>>${log}
+    fi
+
+    if [ "${schema_type}" == "mysql" ]; then
+      echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install mysql Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+        dnf install mysql -y &>>${log}
+
+        echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+        mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
+        fi
+}
 func_nodejs() {
 
  func_apppreq
@@ -41,11 +59,8 @@ func_nodejs() {
   echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Download Nodejs Dependencies<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
   npm install &>>${log}
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install Mongodb Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  dnf install mongodb-org-shell -y &>>${log}
-
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load ${component} Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  mongo --host mondodb.vdevops562.online </app/schema/${component}.js &>>${log}
+func_schema_setup
+func_systemd
 
  }
 
@@ -62,11 +77,8 @@ func_java() {
   mvn clean package &>>${log}
   mv target/${component}-1.0.jar ${component}.jar &>>${log}
 
- echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Install mysql Client<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  dnf install mysql -y &>>${log}
+ func_schema_setup
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Load Schema<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  mysql -h mysql.vdevops562.online -uroot -pRoboShop@1 < /app/schema/${component}.sql &>>${log}
 
  func_systemd
 }
