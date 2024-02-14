@@ -64,7 +64,6 @@ func_schema_setup() {
 }
 func_nodejs() {
 
- func_apppreq
  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create Mongodb Repo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
    cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
    func_exit_status
