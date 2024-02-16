@@ -6,7 +6,7 @@ dnf install nginx -y &>>${log}
 func_exit_status
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Copy RoboShop Configuration <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-cp nginx-roboshop.conf /etc/nginx/default.d/robosop.conf &>>${log}
+cp nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf &>>${log}
 func_exit_status
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>>>>>>>>Clean Old Content<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
