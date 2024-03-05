@@ -11,6 +11,7 @@
     <mapping directory="$PROJECT_DIR$/tf-module-basic-test" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-docdb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-elasticache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tf-module-rabbitmq" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-rds" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-vpc" vcs="Git" />
   </component>
