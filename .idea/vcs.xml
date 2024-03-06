@@ -8,6 +8,7 @@
     <mapping directory="$PROJECT_DIR$/roboshop-aws-paramaters" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/roboshop-terraform" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-alb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tf-module-app" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-basic-test" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-docdb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/tf-module-elasticache" vcs="Git" />
